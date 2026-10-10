@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Raw Fusion Transcript | King B. Worldwide</title>
+<style>
+:root{--gold:#d4af37;--red:#e03030;--bg:#0a0a0a;--panel:#141414;--ink:#f2ede4;--mut:#a89e8d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman',serif;line-height:1.7}
+.wrap{max-width:760px;margin:0 auto;padding:28px 20px 80px}
+a{color:var(--gold)}a:hover{color:#f0d878}
+.crown{text-align:center;font-size:34px;margin:6px 0 0}
+h1{font-family:'Playfair Display',Georgia,serif;color:var(--gold);text-align:center;font-weight:700;letter-spacing:1px;margin:6px 0 4px;font-size:clamp(24px,4.6vw,36px)}
+.sub{text-align:center;color:var(--mut);margin:0 0 26px;font-style:italic}
+.back{display:inline-block;margin-bottom:18px;text-decoration:none;border:1px solid var(--gold);padding:6px 14px;border-radius:999px;font-size:14px}
+.desc{background:var(--panel);border-left:3px solid var(--red);padding:14px 18px;border-radius:0 8px 8px 0;margin:18px 0}
+.desc p{margin:10px 0}
+audio{width:100%;margin:14px 0}
+.transcript p{margin:0 0 14px}
+footer{margin-top:60px;text-align:center;color:var(--mut);font-size:13px}
+</style><script defer src="https://t.contentsquare.net/uxa/319a1dc6d7523.js"></script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "yva9vezich");
+</script>
+</head><body><div class="wrap">
+<a class="back" href="index.html">← All transcripts</a>
+<div class="crown">👑</div>
+<h1 id="title">Loading…</h1>
+<p class="sub" id="meta"></p>
+<div class="desc" id="desc"></div>
+<audio id="player" controls preload="none"></audio>
+<div class="transcript" id="body"><p class="sub">Loading transcript…</p></div>
+<footer><a href="https://kingbworldwide.com">← kingbworldwide.com</a></footer>
+</div><script>
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const slug = new URLSearchParams(location.search).get('ep');
+const fmtD = s => { try { return new Date(s).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'}); } catch(e){ return s; } };
+const fmtT = s => { const m = Math.round(parseInt(s||'0',10)/60); return m ? m + ' min' : ''; };
+fetch('episodes.json').then(r => r.json()).then(eps => {
+  const e = eps.find(x => x.slug === slug);
+  if (!e) { document.getElementById('title').textContent = 'Episode not found'; return; }
+  document.title = e.title + ' | Raw Fusion Transcripts';
+  document.getElementById('title').textContent = e.title;
+  document.getElementById('meta').textContent = fmtD(e.date) + ' · ' + fmtT(e.duration);
+  document.getElementById('desc').innerHTML =
+    e.description.split(/\n\s*\n/).map(p => '<p>' + esc(p) + '</p>').join('');
+  document.getElementById('player').src = e.audio;
+  return fetch('t/' + slug + '.txt').then(r => r.text()).then(t => {
+    document.getElementById('body').innerHTML =
+      '<h2 style="font-family:\'Playfair Display\',Georgia,serif;font-weight:400">Transcript</h2>' +
+      t.split(/\n\s*\n/).map(p => '<p>' + esc(p) + '</p>').join('');
+  });
+}).catch(() => { document.getElementById('title').textContent = 'Could not load episode'; });
+</script></body></html>
